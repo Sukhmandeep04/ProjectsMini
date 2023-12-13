@@ -1,18 +1,27 @@
-Mini-project04
-
-<a href="https://codeclimate.com/github/Sukhmandeep04/ProjectsMini/maintainability"><img src="https://api.codeclimate.com/v1/badges/88d8c12f03478b996b4d/maintainability" /></a>
+Mini-Project-5
 
 
-📗server.js
 
-Promises and Async/Await readUserData(): Uses Promises and async/await to read user data from 'users.json'. writeUserData(userData): Implements Promises and async/await for writing user data to 'users.json'.
+JSX Syntax
+Purpose: Illustrates JSX syntax.
+Description: This functional component showcases the use of JSX syntax by rendering a simple structure with a heading and a paragraph.
 
-Callbacks handlePostUser(req, res): Highlights where callbacks are still helpful, specifically in handling POST requests where data parsing occurs asynchronously.
+Class Component
+Purpose: Demonstrates a class component.
+Description: This class component has an internal state (message) and renders a message and a paragraph.
 
-Event Loop Operates seamlessly within the Node.js event loop, ensuring efficient handling of asynchronous operations.
+Props and State Example
+Purpose: Demonstrates a functional component with props and state.
+Description: This functional component receives a name prop, manages a local state (count), and renders a greeting, a paragraph, the count, and a button to increment the count.
 
-Error Handling It provides robust error handling for asynchronous operations, including appropriate HTTP status codes and messages for various error scenarios.
+Conditional Rendering Example
+Purpose: Highlights conditional rendering.
+Description: This functional component renders a message conditionally based on the showMessage state and provides a button to toggle the message's visibility.
 
-Response Handling sendJSONResponse(res, status, data): Sends JSON responses with specified status codes. sendResponse(res, status, contentType, data): Sends responses based on content type. Request Handling Functions handleGetUsers(req, res): Asynchronously handles GET requests for user data. handlePostUser(req, res): Manages POST requests asynchronously, utilizing callbacks for data parsing. handlePutUser(req, res, userId): Asynchronously handles PUT requests, updating user data. handleDeleteUser(req, res, userId): Asynchronously handles DELETE requests, deleting user data.
+Lists and Keys Example
+Purpose: Demonstrates rendering a list with keys.
+Description: This functional component uses the map function to render a list of items with unique keys.
 
-HTTP Server Creates an HTTP server using async/await to handle various HTTP methods and routes for user data.
+Main App Component
+Purpose: Composes the main application component.
+Description: This component renders instances of each previously mentioned component to demonstrate their functionalities.
