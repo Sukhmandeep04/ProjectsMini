@@ -5,6 +5,7 @@ const fs = require('fs');
 // Importing the Path module for working with file paths
 const path = require('path');
 
+
 // Function to read user data from the JSON file
 function readUserData(callback) {
   fs.readFile(path.join(__dirname, 'users.json'), 'utf8', (err, data) => {
