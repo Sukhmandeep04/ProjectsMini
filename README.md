@@ -2,18 +2,17 @@ Mini-project03
 
 <a href="https://codeclimate.com/github/Sukhmandeep04/ProjectsMini/maintainability"><img src="https://api.codeclimate.com/v1/badges/88d8c12f03478b996b4d/maintainability" /></a>
 
+
 📗server.js
 
-API Versioning It operates under version 1 (/api/v1/users). It supports future versions for effective updates.
+Promises and Async/Await readUserData(): Uses Promises and async/await to read user data from 'users.json'. writeUserData(userData): Implements Promises and async/await for writing user data to 'users.json'.
 
-Query Parameters GET /api/v1/users supports: name for filtering users by name. Email for filtering users by email.
+Callbacks handlePostUser(req, res): Highlights where callbacks are still helpful, specifically in handling POST requests where data parsing occurs asynchronously.
 
-Pagination it manages large datasets with pagination. Users navigate using the page query parameter.
+Event Loop Operates seamlessly within the Node.js event loop, ensuring efficient handling of asynchronous operations.
 
-Error Handling Robust error handling with informative HTTP status codes and messages.
+Error Handling It provides robust error handling for asynchronous operations, including appropriate HTTP status codes and messages for various error scenarios.
 
-Routes and HTTP Methods GET /api/v1/users: Retrieves user data with optional query parameters. POST /api/v1/users: Creates a new user. PUT /api/v1/users/:userId: Updates an existing user. DELETE /api/v1/users/:userId: Deletes an existing user.
+Response Handling sendJSONResponse(res, status, data): Sends JSON responses with specified status codes. sendResponse(res, status, contentType, data): Sends responses based on content type. Request Handling Functions handleGetUsers(req, res): Asynchronously handles GET requests for user data. handlePostUser(req, res): Manages POST requests asynchronously, utilizing callbacks for data parsing. handlePutUser(req, res, userId): Asynchronously handles PUT requests, updating user data. handleDeleteUser(req, res, userId): Asynchronously handles DELETE requests, deleting user data.
 
-Request Handling Functions handleGetUsers(req, res): Handles GET requests for user data, supporting query parameters. handlePostUser(req, res): Handles POST requests to create a new user. handlePutUser(req, res): Handles PUT requests to update an existing user. handleDeleteUser(req, res): Handles DELETE requests to delete an existing user.
-
-Response Handling sendJSONResponse(res, status, data): Sends JSON responses with a specified status code. sendPlainTextResponse(res, status, message): Sends plain text responses with a specified status code and message. sendErrorResponse(res, status, message): Sends error responses with a specified status code and message.
+HTTP Server Creates an HTTP server using async/await to handle various HTTP methods and routes for user data.
