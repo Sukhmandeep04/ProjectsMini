@@ -1,118 +1,89 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 // Create an Express application
 const app = express();
 const port = 3000;
 
-// MongoDB connection 
+// MongoDB connection
 const mongoUrl = 'mongodb://localhost:27017';
 const dbName = 'Mini001';
 
+mongoose.connect(`${mongoUrl}/${dbName}`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useCreateIndex', true);
+
+// Mongoose User Schema
+const userSchema = new mongoose.Schema({
+  username: { type: String, unique: true, required: true },
+  password: { type: String, required: true }
+});
+
+const User = mongoose.model('User', userSchema);
+
 app.use(bodyParser.json());
 
-app.get('/api/users', async (req, res) => {
-  try {  
-    const data = await readUserData();
-    sendJSONResponse(res, 200, data);
+// Passport.js configuration
+app.use(require('express-session')({ secret: 'your-secret-key', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(
+  (username, password, done) => {
+    User.findOne({ username: username }, (err, user) => {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+      });
+    });
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+// Define route for user registration
+app.post('/api/register', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+    sendResponse(res, 201, 'text/plain', 'User registered successfully');
   } catch (error) {
-    sendResponse(res, 500, 'text/plain', 'Internal Server Error');
+    sendResponse(res, 400, 'text/plain', 'Invalid registration data');
   }
 });
 
-// Define route for creating a new user
-app.post('/api/users', async (req, res) => {
-  const newUser = req.body;
-  try {
-    const data = await readUserData();
-    data.push(newUser);
-    await writeUserData(data);
-    sendResponse(res, 201, 'text/plain', 'User created successfully');
-  } catch (error) {
-    sendResponse(res, 400, 'text/plain', 'Invalid JSON format');
+// Define route for user login
+app.post('/api/login',
+  passport.authenticate('local'),
+  (req, res) => {
+    sendResponse(res, 200, 'text/plain', 'Login successful');
   }
+);
+
+// Define route for user logout
+app.get('/api/logout', (req, res) => {
+  req.logout();
+  sendResponse(res, 200, 'text/plain', 'Logout successful');
 });
 
-
-// Define route for updating a user
-app.put('/api/users/:userId', async (req, res) => {
-  const userId = req.params.userId;
-  const updatedUser = req.body;
-  try {
-    const data = await readUserData();
-    const userIndex = data.findIndex((user) => user.id === userId);
-    if (userIndex === -1) {
-      sendResponse(res, 404, 'text/plain', 'User not found');
-    } else {
-      data[userIndex] = { ...data[userIndex], ...updatedUser };
-      await writeUserData(data);
-      sendResponse(res, 200, 'text/plain', 'User updated successfully');
-    }
-  } catch (error) {
-    sendResponse(res, 400, 'text/plain', 'Invalid JSON format');
-  }
-});
-
-// Define route for deleting a user
-app.delete('/api/users/:userId', async (req, res) => {
-  const userId = req.params.userId;
-  try {
-    const data = await readUserData();
-    const userIndex = data.findIndex((user) => user.id === userId);
-    if (userIndex === -1) {
-      sendResponse(res, 404, 'text/plain', 'User not found');
-    } else {
-      data.splice(userIndex, 1);
-      await writeUserData(data);
-      sendResponse(res, 200, 'text/plain', 'User deleted successfully');
-    }
-  } catch (error) {
-    sendResponse(res, 500, 'text/plain', 'Internal Server Error');
-  }
-});
-
-
-// Function to read user data from the MongoDB database
-async function readUserData() {
-  const client = new MongoClient(mongoUrl);
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    const usersCollection = db.collection('users');
-    const userData = await usersCollection.find({}).toArray();
-    return userData;
-  } catch (error) {
-    throw error;
-  } finally {
-    client.close();
-  }
-}
-
-// Function to write user data to the MongoDB database
-async function writeUserData(userData) {
-  const client = new MongoClient(mongoUrl);
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    const usersCollection = db.collection('users');
-    await usersCollection.deleteMany({});
-    await usersCollection.insertMany(userData);
-  } catch (error) {
-    throw error;
-  } finally {
-    client.close();
-  }
-}
-
-function sendResponse(res, status, contentType, data) {
-  res.writeHead(status, { 'Content-Type': contentType });
-  res.end(data);
-}
-
-function sendJSONResponse(res, status, data) {
-  sendResponse(res, status, 'application/json', JSON.stringify(data));
-}
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/`);
