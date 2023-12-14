@@ -1,27 +1,34 @@
-Mini-Project-5
+Mini-Project-6
 
+📘 App.js
 
+App Component with Fetching Data
 
-JSX Syntax
-Purpose: Illustrates JSX syntax.
-Description: This functional component showcases the use of JSX syntax by rendering a simple structure with a heading and a paragraph.
+Purpose:
 
-Class Component
-Purpose: Demonstrates a class component.
-Description: This class component has an internal state (message) and renders a message and a paragraph.
+Fetches user data from an API when the component mounts and the "Refresh" button clicks.
+Manages loading state to display a loading message while data is being fetched.
+Key Elements:
 
-Props and State Example
-Purpose: Demonstrates a functional component with props and state.
-Description: This functional component receives a name prop, manages a local state (count), and renders a greeting, a paragraph, the count, and a button to increment the count.
+Utilizes the axios library for asynchronous data fetching.
+Uses the useState and useEffect hooks to manage component state and lifecycle.
+Displays a "Refresh" button and a list of users.
+Functionality:
 
-Conditional Rendering Example
-Purpose: Highlights conditional rendering.
-Description: This functional component renders a message conditionally based on the showMessage state and provides a button to toggle the message's visibility.
+The fetchData function initiates an API request, updates the users state with the response data, and sets the loading state accordingly.
+The component renders a "Refresh" button, a loading message while fetching data, and a list of users once the data is loaded.
 
-Lists and Keys Example
-Purpose: Demonstrates rendering a list with keys.
-Description: This functional component uses the map function to render a list of items with unique keys.
+📘 useApp.js
 
-Main App Component
-Purpose: Composes the main application component.
-Description: This component renders instances of each previously mentioned component to demonstrate their functionalities.
+Purpose:
+
+Displays a list of users using a custom hook (useApp) for managing state and functions related to user data.
+Key Elements:
+
+Imports a custom hook (useApp) from an external file to encapsulate the logic for fetching data and managing state.
+Uses the users state and handleRefresh function provided by the custom hook.
+Functionality:
+
+The component renders a heading, a "Refresh" button, and a list of users.
+The custom hook (useApp) abstracts away the logic for fetching data and managing the state, allowing for cleaner and more modular code.
+A message indicating that no users are available is displayed if there are no users.
