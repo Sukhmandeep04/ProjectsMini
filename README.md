@@ -1,42 +1,45 @@
-Mini-Project-8
+Mini-Project-9
 
-<a href="https://codeclimate.com/github/Sukhmandeep04/ProjectsMini/maintainability"><img src="https://api.codeclimate.com/v1/badges/88d8c12f03478b996b4d/maintainability" /></a>
+Dependencies:
 
-Imports:
-- The code starts by importing necessary modules for building a web server, parsing JSON, connecting to MongoDB, and handling validation using express, body-parser, MongoDB, and Mongoose.
-
-Express Setup:
-- An Express application is created using express().
-- The server is configured to listen on port 3000.
-
-MongoDB Connection:
-- The MongoDB connection details, such as the URL and database name, are specified.
-- Mongoose is used to connect to MongoDB with the provided connection details.
-- Event listeners are set up to handle connection errors and log a successful connection.
-
-Mongoose Schema:
-- A Mongoose schema (workoutSchema) is defined for the "Workout" model, specifying the structure of workout documents in the MongoDB collection.
-
+Mongoose User Schema:
+* A Mongoose schema (userSchema) is defined to represent the structure of user documents in the MongoDB collection.
+* The schema includes fields such as username and password, with specific validations and requirements.
+  
 Express Middleware:
-- Body-parser middleware is used to parse incoming JSON requests.
-
-CRUD Operations:
-Routes are defined for CRUD operations on workouts (/api/workouts):
-- Create (POST): Handles the creation of a new workout. Validates the request body using express-validator and saves the workout to the MongoDB database.
-- Read (GET): Retrieves all workouts from the database and sends a JSON response.
-- Update (PUT): Updates an existing workout based on the workout ID. Validates the request body and uses findByIdAndUpdate to update the workout.
-- Delete (DELETE): Deletes an existing workout based on the workout ID.
-
-Validation with Express-Validator:
-- The express-validator library is used for input validation in the POST and PUT routes. It checks if the required fields are present and provides error messages if validation fails.
-
-MongoDB Operations (Mongoose):
-- Functions (readUserData and writeUserData) are defined for reading and writing workout data to MongoDB.
-- These functions use MongoClient to connect to the database, perform operations, and close the connection afterward.
-
-Response Handling Functions:
-- sendResponse and sendJSONResponse are functions used for sending HTTP responses. sendJSONResponse is specifically designed for sending JSON responses with the appropriate headers.
-
-Server Start:
-- The server initiates, and a log message is printed to indicate it is running.
-
+* Body-parser middleware is employed to seamlessly handle incoming JSON requests, making it easier to extract data from the request body.
+* The middleware is applied to the Express application using app.use() to ensure its execution for all incoming requests.
+  
+Passport.js Configuration:
+* Passport.js is configured to handle user authentication using the local strategy.
+* Sessions are employed to persist user login state, enhancing the security and user experience of the authentication process.
+  
+User Registration Route:
+* Endpoint: /api/register
+* Method: POST
+    * Functionality:
+    * Accepts a JSON payload containing username and password.
+    * Utilizes Bcrypt.js to securely hash the password.
+    * Creates a new user in the MongoDB database with the hashed password.
+    * Responds with an appropriate status message.
+      
+User Login Route:
+* Endpoint: /api/login
+* Method: POST
+    * Functionality:
+    * Employs Passport.js local strategy for user authentication.
+    * Provides a success message upon a successful login attempt.
+      
+User Logout Route:
+* Endpoint: /api/logout
+* Method: GET
+    * Functionality:
+    * Logs out the currently authenticated user.
+    * Returns a success message to acknowledge the logout.
+      
+Additional Considerations:
+* The code includes considerations for session management using Express sessions.
+* Passport middleware is used for streamlined user authentication during login.
+  
+Server Initialization:
+* The server is set to listen on port 3000, and a console log message indicates the server's successful initiation.
