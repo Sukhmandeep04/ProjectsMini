@@ -2,16 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 
+// Create an Express application
 const app = express();
 const port = 3000;
 
+// MongoDB connection 
 const mongoUrl = 'mongodb://localhost:27017';
 const dbName = 'Mini001';
 
 app.use(bodyParser.json());
 
 app.get('/api/users', async (req, res) => {
-  try {
+  try {  
     const data = await readUserData();
     sendJSONResponse(res, 200, data);
   } catch (error) {
@@ -19,6 +21,7 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// Define route for creating a new user
 app.post('/api/users', async (req, res) => {
   const newUser = req.body;
   try {
@@ -31,6 +34,8 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
+
+// Define route for updating a user
 app.put('/api/users/:userId', async (req, res) => {
   const userId = req.params.userId;
   const updatedUser = req.body;
@@ -49,6 +54,7 @@ app.put('/api/users/:userId', async (req, res) => {
   }
 });
 
+// Define route for deleting a user
 app.delete('/api/users/:userId', async (req, res) => {
   const userId = req.params.userId;
   try {
@@ -66,6 +72,8 @@ app.delete('/api/users/:userId', async (req, res) => {
   }
 });
 
+
+// Function to read user data from the MongoDB database
 async function readUserData() {
   const client = new MongoClient(mongoUrl);
   try {
@@ -81,6 +89,7 @@ async function readUserData() {
   }
 }
 
+// Function to write user data to the MongoDB database
 async function writeUserData(userData) {
   const client = new MongoClient(mongoUrl);
   try {
