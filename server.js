@@ -95,8 +95,7 @@ app.get('/api/logout', (req, res) => {
 
 // Update Fitness Model: Add posted_by field
 const fitnessSchema = new mongoose.Schema({
-  // ... other fields
-  posted_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Reference to User model
+  posted_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 const FitnessModel = mongoose.model('FitnessModel', fitnessSchema);
@@ -110,3 +109,7 @@ const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(port, () => {
   console.log(`Server running on https://localhost:${port}/`);
 });
+
+function sendResponse(res, status, contentType, message) {
+  res.status(status).contentType(contentType).send(message);
+}
