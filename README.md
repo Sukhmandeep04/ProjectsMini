@@ -1,35 +1,38 @@
-Mini-Project-6
-<a href="https://codeclimate.com/github/Sukhmandeep04/ProjectsMini/maintainability"><img src="https://api.codeclimate.com/v1/badges/88d8c12f03478b996b4d/maintainability" /></a>
+Mini-Project-7
 
-📘 App.js
 
-App Component with Fetching Data
 
-Purpose:
-
-Fetches user data from an API when the component mounts and the "Refresh" button clicks.
-Manages loading state to display a loading message while data is being fetched.
-Key Elements:
-
-Utilizes the axios library for asynchronous data fetching.
-Uses the useState and useEffect hooks to manage component state and lifecycle.
-Displays a "Refresh" button and a list of users.
-Functionality:
-
-The fetchData function initiates an API request, updates the users state with the response data, and sets the loading state accordingly.
-The component renders a "Refresh" button, a loading message while fetching data, and a list of users once the data is loaded.
-
-📘 useApp.js
-
-Purpose:
-
-Displays a list of users using a custom hook (useApp) for managing state and functions related to user data.
-Key Elements:
-
-Imports a custom hook (useApp) from an external file to encapsulate the logic for fetching data and managing state.
-Uses the users state and handleRefresh function provided by the custom hook.
-Functionality:
-
-The component renders a heading, a "Refresh" button, and a list of users.
-The custom hook (useApp) abstracts away the logic for fetching data and managing the state, allowing for cleaner and more modular code.
-A message indicating that no users are available is displayed if there are no users.
+📘 server.js
+________________________
+Imports:
+  The code starts by importing the necessary modules:
+    - Express: Web application framework for Node.js.
+    - Body-parser: Middleware for handling JSON request bodies.
+    - MongoClient from MongoDB: MongoDB driver for Node.js.
+    
+Express Setup:
+    - It creates an Express application (app).
+    - Specifies the port (3000) on which the server will listen.
+    - It defines the MongoDB connection details (mongoUrl and dbName).
+    
+Middleware Configuration:
+    - Configures Express to use body-parser for parsing JSON in request bodies.
+    
+API Endpoints:
+  Defines several API endpoints for user management:
+    - GET /api/users: Retrieves all users from MongoDB and sends a JSON response.
+    - POST /api/users: Add a new user to the MongoDB collection.
+    - PUT /api/users/:userId: Updates an existing user in the MongoDB collection.
+    - DELETE /api/users/:userId: Deletes a user from the MongoDB collection.
+    
+MongoDB Operations:
+   - Provides functions (readUserData and writeUserData) for reading and writing user data to/from MongoDB.
+   - It uses MongoClient to connect to the MongoDB instance, perform operations, and close the connection afterward.
+     
+Response Handling Functions:
+   - sendResponse: Sends a custom HTTP response with the specified status code, content type, and data.
+   - sendJSONResponse: Sends a JSON response using sendResponse.
+     
+Server Initialization:
+   - The Express app listens on port 3000.
+   - Upon successful server startup, a message will be logged to the console.
